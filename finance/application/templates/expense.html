@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Income/Expense</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1c1c1c; /* Dark background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #ffffff;
+        }
+        .form-container {
+            background-color: #2e2e2e; /* Darker form background */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #a854e5; /* Purple heading */
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cccccc; /* Light gray for labels */
+        }
+        input[type="text"], 
+        input[type="number"], 
+        input[type="date"], 
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #444444;
+            border-radius: 8px;
+            background-color: #333333; /* Dark input background */
+            color: #ffffff;
+        }
+        input[type="text"]::placeholder,
+        input[type="number"]::placeholder {
+            color: #bbbbbb; /* Lighter gray for placeholders */
+        }
+        select {
+            background-color: #333333;
+        }
+        input[type="submit"] {
+            width: 100%;
+            background-color: #a854e5; /* Purple button */
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #8b42c5; /* Darker purple on hover */
+        }
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Add Income/Expense</h2>
+    <form action="{% url 'add_entry' %}" method="POST">
+        {% csrf_token %}
+        <label for="type">Type:</label>
+        <select name="type" id="type" required>
+            <option value="">Select Type</option>
+            <option value="Income">Income</option>
+            <option value="Expense">Expense</option>
+        </select>
+        <label for="category">Category:</label>
+        <input type="text" name="category" required>
+        <label for="amount">Amount:</label>
+        <input type="number" name="amount" required>
+        <label for="date">Date:</label>
+        <input type="date" name="date" required>
+        <label for="description">Description:</label>
+        <input type="text" name="description">
+        <input type="submit" value="Add Entry">
+    </form>
+    
+    
+    
+</div>
+
+</body>
+</html>

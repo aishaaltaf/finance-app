@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Summary</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0d0d0d;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar-container {
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            width: 250px;
+            margin: 20px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        h1 {
+            color: #b33cff;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .summary-box {
+            background-color: #262626;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .summary-box h2 {
+            margin: 0;
+            color: #e6e6e6;
+            font-size: 1.2em;
+        }
+
+        .summary-box p {
+            margin: 10px 0 0;
+            font-size: 1.3em;
+            color: #ffffff;
+        }
+
+        .balance {
+            background-color: #4c1c75;
+        }
+
+        .summary-box span {
+            color: #b33cff;
+        }
+
+        .footer {
+            margin-top: 15px;
+            font-size: 0.8em;
+            color: #777777;
+        }
+
+        .footer a {
+            color: #b33cff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            margin-left: 280px; /* Ensure there's space for the sidebar */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .transaction-container {
+            background-color: #1a1a1a;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #333;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        td {
+            background-color: #262626;
+        }
+
+        .summary {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        .btn {
+            background-color: #b33cff;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #9e2cbd;
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar-container {
+                width: auto;
+                margin: 10px;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar Container -->
+<div class="sidebar-container">
+    <h1>Financial Summary</h1>
+
+    <!-- Total Income -->
+    <div class="summary-box">
+        <h2>Total Income</h2>
+        <p>$<span>{{ total_income }}</span></p>
+    </div>
+
+    <!-- Total Expenses -->
+    <div class="summary-box">
+        <h2>Total Expenses</h2>
+        <p>$<span>{{ total_expenses }}</span></p>
+    </div>
+
+    <!-- Balance -->
+    <div class="summary-box balance">
+        <h2>Balance</h2>
+        <p>$<span>{{ balance }}</span></p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Generated on: {{ current_date }}</p>
+    </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="main-content">
+    <div class="transaction-container">
+        <h2>Transaction Summary</h2>
+
+        <!-- Transaction Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Action</th> <!-- Changed Description to Action -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.category }}</td>
+                    <td>${{ transaction.amount }}</td>
+                    <td>{{ transaction.get_transaction_type_display }}</td> <!-- Used get_transaction_type_display() for human-readable type -->
+                    <td>{{ transaction.date }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'delete_transaction' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="transaction_id" value="{{ transaction.id }}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+
+
+
