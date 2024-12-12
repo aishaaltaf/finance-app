@@ -1,1 +1,0 @@
-# finanicial-tracking-app
